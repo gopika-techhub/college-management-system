@@ -1,0 +1,90 @@
+{% extends "base.html" %}
+
+{% block title %}Welcome to CloudCMS{% endblock %}
+
+{% block content %}
+<div class="row min-vh-75 align-items-center">
+    <div class="col-lg-6">
+        <h1 class="display-3 fw-bold mb-4" style="color: var(--primary-color)">Empowering Education <br>with <span
+                style="color: #6366f1">Cloud Intelligence</span></h1>
+        <p class="lead mb-5 text-secondary">A unified platform for students, faculty, and administration to manage
+            college life seamlessly. From daily attendance to exam schedules, we cover it all.</p>
+        <div class="d-flex gap-3">
+            <a href="{{ url_for('login') }}" class="btn btn-primary btn-lg px-5 shadow">Get Started</a>
+            <a href="#" class="btn btn-outline-secondary btn-lg px-5">Learn More</a>
+        </div>
+    </div>
+    <div class="col-lg-6 d-none d-lg-block">
+        <div class="glass-panel p-5 position-relative overflow-hidden"
+            style="min-height: 400px; background: linear-gradient(135deg, rgba(255,255,255,0.4) 0%, rgba(255,255,255,0.1) 100%); border: 1px solid rgba(255,255,255,0.5);">
+            <div class="position-absolute"
+                style="top: -20px; right: -20px; width: 150px; height: 150px; background: var(--secondary-color); border-radius: 50%; filter: blur(60px); opacity: 0.3;">
+            </div>
+            <div class="position-absolute"
+                style="bottom: -20px; left: -20px; width: 150px; height: 150px; background: var(--primary-color); border-radius: 50%; filter: blur(60px); opacity: 0.3;">
+            </div>
+
+            <div class="row g-4 position-relative">
+                <div class="col-6">
+                    <div class="card p-4 text-center border-0 shadow-sm" style="background: rgba(255,255,255,0.6)">
+                        <i class="fas fa-graduation-cap fa-3x mb-3 text-primary"></i>
+                        <h5>Student Portal</h5>
+                        <p class="small text-muted mb-0">Track progress & marks</p>
+                    </div>
+                </div>
+                <div class="col-6">
+                    <div class="card p-4 text-center border-0 shadow-sm" style="background: rgba(255,255,255,0.6)">
+                        <i class="fas fa-chalkboard-teacher fa-3x mb-3 text-success"></i>
+                        <h5>Staff Hub</h5>
+                        <p class="small text-muted mb-0">Manage classes & payroll</p>
+                    </div>
+                </div>
+                <div class="col-6">
+                    <div class="card p-4 text-center border-0 shadow-sm" style="background: rgba(255,255,255,0.6)">
+                        <i class="fas fa-calendar-check fa-3x mb-3 text-warning"></i>
+                        <h5>Exam Planner</h5>
+                        <p class="small text-muted mb-0">Automated scheduling</p>
+                    </div>
+                </div>
+                <div class="col-6">
+                    <div class="card p-4 text-center border-0 shadow-sm" style="background: rgba(255,255,255,0.6)">
+                        <i class="fas fa-chart-line fa-3x mb-3 text-info"></i>
+                        <h5>Admin Control</h5>
+                        <p class="small text-muted mb-0">Full system insights</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row mt-5 mb-5 text-center">
+    <div class="col-md-4">
+        <div class="p-4">
+            <div class="rounded-circle bg-white shadow-sm d-inline-flex p-4 mb-3">
+                <i class="fas fa-shield-alt fa-2x text-primary"></i>
+            </div>
+            <h4>Secure & Reliable</h4>
+            <p class="text-muted">Role-based access control ensuring data integrity and security for all users.</p>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="p-4">
+            <div class="rounded-circle bg-white shadow-sm d-inline-flex p-4 mb-3">
+                <i class="fas fa-bolt fa-2x text-danger"></i>
+            </div>
+            <h4>Real-time Updates</h4>
+            <p class="text-muted">Instant notifications for attendance, marks, and salary processing.</p>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="p-4">
+            <div class="rounded-circle bg-white shadow-sm d-inline-flex p-4 mb-3">
+                <i class="fas fa-mobile-alt fa-2x text-success"></i>
+            </div>
+            <h4>Mobile Ready</h4>
+            <p class="text-muted">Access CloudCMS from any device with our fully responsive premium interface.</p>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,156 @@
+{% extends 'base.html' %}
+{% block title %}Student Dashboard{% endblock %}
+
+{% block content %}
+<div class="dashboard-container">
+    <div class="d-flex justify-content-between align-items-center mb-5">
+        <div>
+            <h1 class="fw-bold mb-0 text-primary">Student Dashboard</h1>
+            <p class="text-muted">Academic progress for {{ current_user.name }}</p>
+        </div>
+        <a href="{{ url_for('student_exams') }}" class="btn btn-primary rounded-pill shadow-sm">
+            <i class="fas fa-calendar-alt me-2"></i>My Exam Schedule
+        </a>
+    </div>
+
+    <div class="row g-4 mb-5">
+        <!-- Profile Card -->
+        <div class="col-md-4">
+            <div class="card p-4 border-0 shadow-sm h-100 bg-white">
+                <div class="text-center mb-4">
+                    <div class="rounded-circle bg-primary bg-opacity-10 d-inline-flex align-items-center justify-content-center p-4 mb-3"
+                        style="width: 80px; height: 80px;">
+                        <i class="fas fa-user-graduate text-primary fa-2x"></i>
+                    </div>
+                    <h5 class="fw-bold mb-1">{{ current_user.name }}</h5>
+                    <p class="small text-muted mb-0">Student ID: CMS-26-{{ student.student_id }}</p>
+                </div>
+                <div class="border-top pt-3">
+                    <div class="d-flex justify-content-between mb-2">
+                        <span class="text-muted small">Department</span>
+                        <span class="fw-600 small">{{ student.department }}</span>
+                    </div>
+                    <div class="d-flex justify-content-between mb-2">
+                        <span class="text-muted small">Current Semester</span>
+                        <span class="fw-600 small">{{ student.semester }}</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Attendance Stats -->
+        <div class="col-md-4">
+            <div class="card p-4 border-0 shadow-sm h-100 text-center bg-white">
+                <h6 class="text-uppercase text-muted small fw-bold mb-4">Attendance Rate</h6>
+                <div class="position-relative d-inline-block">
+                    <div class="display-3 fw-bold text-primary mb-0">{{ "%.1f"|format(attendance_perc) }}%</div>
+                    <div class="progress mt-3" style="height: 10px; border-radius: 5px;">
+                        <div class="progress-bar bg-primary" role="progressbar" style="width: {{ attendance_perc }}%">
+                        </div>
+                    </div>
+                </div>
+                <p class="mt-4 small text-muted">
+                    {% if attendance_perc >= 75 %}
+                    <span class="text-success"><i class="fas fa-check-circle me-1"></i> On Track!</span>
+                    {% else %}
+                    <span class="text-danger"><i class="fas fa-exclamation-triangle me-1"></i> Low Attendance</span>
+                    {% endif %}
+                </p>
+            </div>
+        </div>
+
+        <!-- Quick Summary -->
+        <div class="col-md-4">
+            <div class="card p-4 border-0 shadow-sm h-100 bg-dark text-white">
+                <h6 class="text-uppercase opacity-75 small fw-bold mb-4">Quick Links</h6>
+                <div class="list-group list-group-flush bg-transparent">
+                    <a href="{{ url_for('student_exams') }}"
+                        class="list-group-item list-group-item-action bg-transparent text-white border-secondary px-0 py-3">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <span><i class="fas fa-file-signature me-3 opacity-75"></i>Upcoming Exams</span>
+                            <i class="fas fa-chevron-right small opacity-50"></i>
+                        </div>
+                    </a>
+                    <a href="#"
+                        class="list-group-item list-group-item-action bg-transparent text-white border-0 px-0 py-3">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <span><i class="fas fa-book-open me-3 opacity-75"></i>Study Resources</span>
+                            <i class="fas fa-chevron-right small opacity-50"></i>
+                        </div>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row g-4">
+        <!-- Marks Table -->
+        <div class="col-lg-7">
+            <div class="card p-4 border-0 shadow-sm">
+                <h5 class="fw-bold mb-4"><i class="fas fa-poll me-3 text-primary"></i>Internal Assessments</h5>
+                {% if marks %}
+                <div class="table-responsive">
+                    <table class="table table-hover align-middle">
+                        <thead class="table-light">
+                            <tr>
+                                <th>Subject</th>
+                                <th class="text-center">Score</th>
+                                <th class="text-end">Status</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for m in marks %}
+                            <tr>
+                                <td class="fw-600">{{ m.subject }}</td>
+                                <td class="text-center">{{ m.marks }} / 100</td>
+                                <td class="text-end">
+                                    {% if m.marks >= 40 %}
+                                    <span
+                                        class="badge bg-success-subtle text-success px-3 rounded-pill">Qualified</span>
+                                    {% else %}
+                                    <span class="badge bg-danger-subtle text-danger px-3 rounded-pill">Review</span>
+                                    {% endif %}
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+                {% else %}
+                <div class="text-center py-5 text-muted opacity-50">
+                    <i class="fas fa-clipboard-list fa-3x mb-3"></i>
+                    <p>Marks have not been uploaded yet.</p>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+
+        <!-- Recent Activity -->
+        <div class="col-lg-5">
+            <div class="card p-4 border-0 shadow-sm">
+                <h5 class="fw-bold mb-4"><i class="fas fa-history me-3 text-primary"></i>Recent Attendance</h5>
+                {% if attendance %}
+                <div class="list-group list-group-flush">
+                    {% for a in attendance[-5:]|reverse %}
+                    <div
+                        class="list-group-item d-flex justify-content-between align-items-center px-0 py-3 border-light">
+                        <div class="d-flex align-items-center">
+                            <i class="fas fa-calendar-day me-3 text-muted"></i>
+                            <div class="fw-600">{{ a.date.strftime('%d %b, %Y') }}</div>
+                        </div>
+                        <span
+                            class="badge {% if a.status == 'Present' %}bg-success{% else %}bg-danger{% endif %} px-3">{{
+                            a.status }}</span>
+                    </div>
+                    {% endfor %}
+                </div>
+                {% else %}
+                <div class="text-center py-5 text-muted opacity-50">
+                    <p>No attendance records available.</p>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

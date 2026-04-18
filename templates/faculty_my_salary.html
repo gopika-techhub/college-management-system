@@ -1,0 +1,41 @@
+{% extends "base.html" %}
+
+{% block title %}My Salary Records{% endblock %}
+
+{% block content %}
+<div class="card shadow-sm">
+    <div class="card-body p-4">
+        <h4 class="card-title mb-4"><i class="fas fa-wallet me-2 text-primary"></i>My Salary slips</h4>
+        <div class="table-responsive">
+            <table class="table table-hover">
+                <thead class="table-light">
+                    <tr>
+                        <th>Month/Year</th>
+                        <th>Amount Paid</th>
+                        <th>Status</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for salary in salaries %}
+                    <tr>
+                        <td><strong>{{ salary.month }} {{ salary.year }}</strong></td>
+                        <td>₹{{ "{:,.2f}".format(salary.amount) }}</td>
+                        <td>
+                            {% if salary.status == 'Paid' %}
+                            <span class="badge bg-success px-3">Paid</span>
+                            {% else %}
+                            <span class="badge bg-warning text-dark px-3">Pending</span>
+                            {% endif %}
+                        </td>
+                    </tr>
+                    {% else %}
+                    <tr>
+                        <td colspan="3" class="text-center text-muted py-4">No salary records found.</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+{% endblock %}

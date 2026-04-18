@@ -1,0 +1,72 @@
+{% extends "base.html" %}
+
+{% block title %}Staff Attendance Management{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-md-4">
+        <div class="card shadow-sm mb-4">
+            <div class="card-body p-4">
+                <h4 class="card-title mb-4"><i class="fas fa-user-check me-2 text-primary"></i>Mark Staff Attendance
+                </h4>
+                <form method="POST">
+                    {{ form.hidden_tag() }}
+                    <div class="mb-3">
+                        <label class="form-label">Select Staff Member</label>
+                        {{ form.faculty_id(class="form-select") }}
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Date</label>
+                        {{ form.date(class="form-control") }}
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Attendance Status</label>
+                        {{ form.status(class="form-select") }}
+                    </div>
+                    {{ form.submit(class="btn btn-primary w-100 py-2") }}
+                </form>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-8">
+        <div class="card shadow-sm">
+            <div class="card-body p-4">
+                <h4 class="card-title mb-4"><i class="fas fa-history me-2 text-primary"></i>Recent Attendance Records
+                </h4>
+                <div class="table-responsive">
+                    <table class="table table-hover">
+                        <thead class="table-light">
+                            <tr>
+                                <th>Staff Name</th>
+                                <th>Subject</th>
+                                <th>Date</th>
+                                <th>Status</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for record in attendance %}
+                            <tr>
+                                <td>{{ record.faculty.user.name }}</td>
+                                <td>{{ record.faculty.subject }}</td>
+                                <td>{{ record.date.strftime('%d %b %Y') }}</td>
+                                <td>
+                                    {% if record.status == 'Present' %}
+                                    <span class="badge bg-success-subtle text-success px-3">Present</span>
+                                    {% else %}
+                                    <span class="badge bg-danger-subtle text-danger px-3">Absent</span>
+                                    {% endif %}
+                                </td>
+                            </tr>
+                            {% else %}
+                            <tr>
+                                <td colspan="4" class="text-center text-muted py-4">No attendance records found.</td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,127 @@
+{% extends 'base.html' %}
+{% block title %}Manage Users{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-md-5">
+        <div class="card p-4 border-0 shadow-sm sticky-top" style="top: 100px;">
+            <div class="mb-4">
+                <a href="{{ url_for('admin_dashboard') }}" class="btn btn-sm btn-link text-decoration-none p-0 mb-3">
+                    <i class="fas fa-arrow-left me-1"></i> Back to Dashboard
+                </a>
+                <h3 class="fw-bold">Create New User</h3>
+                <p class="text-muted small">Register students or faculty members</p>
+            </div>
+
+            <form method="POST">
+                {{ form.hidden_tag() }}
+
+                <div class="mb-3">
+                    <label class="form-label small fw-bold">Full Name</label>
+                    {{ form.name(class="form-control bg-light border-0 py-2", placeholder="John Doe") }}
+                </div>
+                <div class="mb-3">
+                    <label class="form-label small fw-bold">Email Address</label>
+                    {{ form.email(class="form-control bg-light border-0 py-2", placeholder="john@college.com") }}
+                </div>
+
+                <div class="row g-3">
+                    <div class="col-md-6 mb-3">
+                        <label class="form-label small fw-bold">Password</label>
+                        {{ form.password(class="form-control bg-light border-0 py-2", placeholder="••••••••") }}
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <label class="form-label small fw-bold">Role</label>
+                        {{ form.role(class="form-select bg-light border-0 py-2", id="roleSelect") }}
+                    </div>
+                </div>
+
+                <!-- Student Specific Fields -->
+                <div id="studentFields" class="row g-3 d-none">
+                    <div class="col-md-6 mb-3">
+                        <label class="form-label small fw-bold">Department</label>
+                        {{ form.department(class="form-control bg-light border-0 py-2", placeholder="CSE") }}
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <label class="form-label small fw-bold">Semester</label>
+                        {{ form.semester(class="form-control bg-light border-0 py-2", placeholder="1") }}
+                    </div>
+                </div>
+
+                <!-- Faculty Specific Fields -->
+                <div id="facultyFields" class="mb-3 d-none">
+                    <label class="form-label small fw-bold">Assigned Subject</label>
+                    {{ form.subject(class="form-control bg-light border-0 py-2", placeholder="Data Structures") }}
+                </div>
+
+                <div class="mt-4">
+                    {{ form.submit(class="btn btn-primary w-100 py-2 rounded-pill shadow-sm") }}
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div class="col-md-7">
+        <div class="card p-4 border-0 shadow-sm">
+            <h4 class="fw-bold mb-4">Existing Users</h4>
+            <div class="table-responsive">
+                <table class="table table-hover align-middle">
+                    <thead class="table-light">
+                        <tr>
+                            <th>User</th>
+                            <th>Role</th>
+                            <th>Info</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for u in users %}
+                        <tr>
+                            <td>
+                                <div class="fw-600">{{ u.name }}</div>
+                                <div class="small text-muted">{{ u.email }}</div>
+                            </td>
+                            <td>
+                                <span
+                                    class="badge {% if u.role == 'Admin' %}bg-danger{% elif u.role == 'Faculty' %}bg-primary{% else %}bg-success{% endif %} rounded-pill px-3">
+                                    {{ u.role }}
+                                </span>
+                            </td>
+                            <td>
+                                {% if u.role == 'Student' %}
+                                <span class="small text-muted">{{ u.student_profile.department }} - Sem {{
+                                    u.student_profile.semester }}</span>
+                                {% elif u.role == 'Faculty' %}
+                                <span class="small text-muted">{{ u.faculty_profile.subject }}</span>
+                                {% else %}
+                                <span class="small text-muted">Management</span>
+                                {% endif %}
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    const roleSelect = document.getElementById('roleSelect');
+    const studentFields = document.getElementById('studentFields');
+    const facultyFields = document.getElementById('facultyFields');
+
+    function toggleFields() {
+        studentFields.classList.add('d-none');
+        facultyFields.classList.add('d-none');
+
+        if (roleSelect.value === 'Student') {
+            studentFields.classList.remove('d-none');
+        } else if (roleSelect.value === 'Faculty') {
+            facultyFields.classList.remove('d-none');
+        }
+    }
+
+    roleSelect.addEventListener('change', toggleFields);
+    window.onload = toggleFields; // Initialize on load
+</script>
+{% endblock %}

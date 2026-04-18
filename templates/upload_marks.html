@@ -1,0 +1,40 @@
+{% extends 'base.html' %}
+{% block title %}Upload Marks{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center align-items-center" style="min-height: 70vh;">
+    <div class="col-md-5">
+        <div class="card p-5 border-0 shadow-lg">
+            <div class="mb-4 text-center">
+                <div class="rounded-circle bg-success bg-opacity-10 d-inline-flex p-3 mb-3">
+                    <i class="fas fa-file-invoice fa-2x text-success"></i>
+                </div>
+                <h2 class="fw-bold">Upload Assessment</h2>
+                <p class="text-muted">Enter internal marks for students</p>
+            </div>
+
+            <form method="POST">
+                {{ form.hidden_tag() }}
+                <div class="mb-3">
+                    <label class="form-label small fw-bold text-uppercase">Student Name</label>
+                    {{ form.student_id(class="form-select bg-light border-0 py-2") }}
+                </div>
+                <div class="mb-3">
+                    <label class="form-label small fw-bold text-uppercase">Subject Name</label>
+                    {{ form.subject(class="form-control bg-light border-0 py-2", placeholder="e.g. Operating Systems")
+                    }}
+                </div>
+                <div class="mb-4">
+                    <label class="form-label small fw-bold text-uppercase">Scored Marks (0-100)</label>
+                    {{ form.marks(class="form-control bg-light border-0 py-2", placeholder="Enter marks") }}
+                </div>
+                <div class="d-grid gap-2">
+                    {{ form.submit(class="btn btn-success btn-lg rounded-pill shadow-sm") }}
+                    <a href="{{ url_for('faculty_dashboard') }}"
+                        class="btn btn-link text-muted text-decoration-none small">Cancel</a>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}

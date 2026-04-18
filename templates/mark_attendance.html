@@ -1,0 +1,39 @@
+{% extends 'base.html' %}
+{% block title %}Mark Attendance{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center align-items-center" style="min-height: 70vh;">
+    <div class="col-md-5">
+        <div class="card p-5 border-0 shadow-lg">
+            <div class="mb-4 text-center">
+                <div class="rounded-circle bg-primary bg-opacity-10 d-inline-flex p-3 mb-3">
+                    <i class="fas fa-calendar-check fa-2x text-primary"></i>
+                </div>
+                <h2 class="fw-bold">Student Attendance</h2>
+                <p class="text-muted">Record daily presence in class</p>
+            </div>
+
+            <form method="POST">
+                {{ form.hidden_tag() }}
+                <div class="mb-3">
+                    <label class="form-label small fw-bold text-uppercase">Student Name</label>
+                    {{ form.student_id(class="form-select bg-light border-0 py-2") }}
+                </div>
+                <div class="mb-3">
+                    <label class="form-label small fw-bold text-uppercase">Attendance Date</label>
+                    {{ form.date(class="form-control bg-light border-0 py-2", type="date") }}
+                </div>
+                <div class="mb-4">
+                    <label class="form-label small fw-bold text-uppercase">Status</label>
+                    {{ form.status(class="form-select bg-light border-0 py-2") }}
+                </div>
+                <div class="d-grid gap-2">
+                    {{ form.submit(class="btn btn-primary btn-lg rounded-pill shadow-sm") }}
+                    <a href="{{ url_for('faculty_dashboard') }}"
+                        class="btn btn-link text-muted text-decoration-none small">Cancel</a>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}

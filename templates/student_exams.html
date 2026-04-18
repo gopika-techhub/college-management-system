@@ -1,0 +1,81 @@
+{% extends "base.html" %}
+{% block title %}My Exam Schedule{% endblock %}
+
+{% block content %}
+<div class="dashboard-container">
+    <div class="d-flex justify-content-between align-items-center mb-5">
+        <div>
+            <h1 class="fw-bold mb-0">Examination Schedule</h1>
+            <p class="text-muted">Stay prepared for your upcoming assessments</p>
+        </div>
+        <div class="badge bg-primary bg-opacity-10 text-primary px-3 py-2 rounded-pill">
+            <i class="fas fa-clock me-2"></i>Current Date: {{ date.today().strftime('%d %b, %Y') }}
+        </div>
+    </div>
+
+    <div class="card border-0 shadow-sm overflow-hidden">
+        <div class="card-header bg-white py-3 border-0">
+            <h5 class="fw-bold mb-0"><i class="fas fa-book-reader me-2 text-primary"></i>Applied Course Schedule</h5>
+        </div>
+        <div class="table-responsive">
+            <table class="table table-hover align-middle mb-0">
+                <thead class="bg-light text-uppercase small">
+                    <tr>
+                        <th class="ps-4">Subject</th>
+                        <th>Exam Date</th>
+                        <th>Timing</th>
+                        <th class="text-center">Status</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for exam in exams %}
+                    <tr>
+                        <td class="ps-4">
+                            <div class="fw-bold">{{ exam.subject }}</div>
+                        </td>
+                        <td>
+                            <div class="d-flex align-items-center">
+                                <i class="far fa-calendar-alt me-2 text-muted"></i>
+                                {{ exam.date.strftime('%A, %d %b %Y') }}
+                            </div>
+                        </td>
+                        <td>
+                            <div class="d-flex align-items-center">
+                                <i class="far fa-clock me-2 text-muted"></i>
+                                {{ exam.time }}
+                            </div>
+                        </td>
+                        <td class="text-center">
+                            {% if exam.date < date.today() %} <span
+                                class="badge bg-secondary-subtle text-secondary rounded-pill px-3">Concluded</span>
+                                {% elif exam.date == date.today() %}
+                                <span class="badge bg-warning-subtle text-warning rounded-pill px-3">Ongoing
+                                    Today</span>
+                                {% else %}
+                                <span class="badge bg-primary-subtle text-primary rounded-pill px-3">Scheduled</span>
+                                {% endif %}
+                        </td>
+                    </tr>
+                    {% else %}
+                    <tr>
+                        <td colspan="4" class="text-center text-muted py-5">
+                            <i class="fas fa-calendar-times mb-3 fa-3x opacity-25"></i>
+                            <p>No exams have been scheduled for your department and semester yet.</p>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <div class="mt-4 p-4 rounded-4 bg-white border-0 shadow-sm">
+        <h6 class="fw-bold mb-3"><i class="fas fa-info-circle me-2 text-info"></i>Exam Instructions:</h6>
+        <ul class="small text-muted mb-0">
+            <li>Please report to the examination hall 30 minutes before the scheduled time.</li>
+            <li>Carry your physical identity card for verification.</li>
+            <li>Electronic gadgets are strictly prohibited inside the exam hall.</li>
+        </ul>
+    </div>
+</div>
+{% endblock %}

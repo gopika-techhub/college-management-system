@@ -1,0 +1,82 @@
+{% extends "base.html" %}
+
+{% block title %}Salary Maintenance{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-md-4">
+        <div class="card shadow-sm mb-4">
+            <div class="card-body p-4">
+                <h4 class="card-title mb-4"><i class="fas fa-hand-holding-usd me-3 text-primary"></i>Process Salary</h4>
+                <form method="POST">
+                    {{ form.hidden_tag() }}
+                    <div class="mb-3">
+                        <label class="form-label">Select Faculty/Staff</label>
+                        {{ form.faculty_id(class="form-select") }}
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Salary Amount (₹)</label>
+                        {{ form.amount(class="form-control", placeholder="e.g. 50000") }}
+                    </div>
+                    <div class="row">
+                        <div class="col-6 mb-3">
+                            <label class="form-label">Month</label>
+                            {{ form.month(class="form-select") }}
+                        </div>
+                        <div class="col-6 mb-3">
+                            <label class="form-label">Year</label>
+                            {{ form.year(class="form-control", value="2026") }}
+                        </div>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Payment Status</label>
+                        {{ form.status(class="form-select") }}
+                    </div>
+                    {{ form.submit(class="btn btn-primary w-100 py-2") }}
+                </form>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-8">
+        <div class="card shadow-sm">
+            <div class="card-body p-4">
+                <h4 class="card-title mb-4"><i class="fas fa-file-invoice-dollar me-3 text-primary"></i>Salary History
+                </h4>
+                <div class="table-responsive">
+                    <table class="table table-hover">
+                        <thead class="table-light">
+                            <tr>
+                                <th>Staff Name</th>
+                                <th>Month/Year</th>
+                                <th>Amount</th>
+                                <th>Status</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for salary in salaries %}
+                            <tr>
+                                <td>{{ salary.faculty.user.name }}</td>
+                                <td>{{ salary.month }} {{ salary.year }}</td>
+                                <td><strong>₹{{ "{:,.2f}".format(salary.amount) }}</strong></td>
+                                <td>
+                                    {% if salary.status == 'Paid' %}
+                                    <span class="badge bg-success px-3">Paid</span>
+                                    {% else %}
+                                    <span class="badge bg-warning text-dark px-3">Pending</span>
+                                    {% endif %}
+                                </td>
+                            </tr>
+                            {% else %}
+                            <tr>
+                                <td colspan="4" class="text-center text-muted py-4">No salary records processed yet.
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
